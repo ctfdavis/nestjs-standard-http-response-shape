@@ -91,6 +91,8 @@ interface FormattedException<T> extends Formatted<T> {
 // app.controller.ts
 @Get('/hello')
 @FormattedMessages(['This is a message.'])
+// A string is also accepted:
+// @FormattedMessages('This is a message.')
 getHello() {
     return { message: 'Hello, world!' };
 }
@@ -116,7 +118,12 @@ getHello() {
 // app.controller.ts
 @Get('/error')
 getError() {
-    throw FormattedMessages(['An error occurred.'], new HttpException({ error: 'Error goes here.' }, 500));
+    throw FormattedMessages(
+        ['An error occurred.'],
+        new BadRequestException({ error: 'Error goes here.' }),
+    );
+    // alternatively, use HttpException:
+    // throw FormattedMessages(['An error occurred.'], new HttpException({ error: 'Error goes here.' }, 500));
 }
 ```
 
