@@ -27,8 +27,9 @@ import { FormattedResponseInterceptor, FormattedExceptionFilter } from 'nestjs-s
 // ...
 
 const reflector = new Reflector();
+const adapterHost = app.get(HttpAdapterHost);
 app.useGlobalInterceptors(new FormattedResponseInterceptor(reflector));
-app.useGlobalFilters(new FormattedExceptionFilter(reflector));
+app.useGlobalFilters(new FormattedExceptionFilter(adapterHost, reflector));
 ```
 
 The providers will intercept all successful responses and catch exceptions, and then format them into a standard shape.
