@@ -1,0 +1,12 @@
+# source
+src/
+test/
+e2e/
+tsconfig.json
+commitlint.config.js
+jest.config.js
+.*
+
+# misc
+LICENSE
+README.md
