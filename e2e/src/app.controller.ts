@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException } from '@nestjs/common';
+import { BadRequestException, Controller, Get, HttpException } from '@nestjs/common';
 import { FormattedMessages } from '../../src';
 import { fixtures } from '../fixtures';
 
@@ -47,5 +47,10 @@ export class AppController {
     @Get(fixtures.paths.getNotHTTPException)
     getNotHTTPException() {
         throw new Error(fixtures.values.getNotHTTPException);
+    }
+
+    @Get(fixtures.paths.getBadRequestException)
+    getBadRequestException() {
+        throw FormattedMessages(fixtures.messages.getBadRequestException, new BadRequestException(fixtures.values.getBadRequestException));
     }
 }

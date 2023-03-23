@@ -1,23 +1,24 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { FormattedException } from '../types/formatted-exception.interface';
 import { Status } from '../types/status.enum';
-import { Reflector } from '@nestjs/core';
+import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { FORMATTED_MESSAGE_METADATA } from '../constants';
+import { isHttpException } from '../utils/is-http-exception';
 
 @Catch()
 export class FormattedExceptionFilter<T> implements ExceptionFilter {
-    constructor(private readonly reflector: Reflector) {}
+    constructor(private readonly httpAdapterHost: HttpAdapterHost, private readonly reflector: Reflector) {}
 
     catch(exception: unknown, host: ArgumentsHost) {
+        const { httpAdapter } = this.httpAdapterHost;
+
         const ctx = host.switchToHttp();
-        const response = ctx.getResponse();
 
-        const code = exception instanceof HttpException ? exception.getStatus() : 500;
+        const code = isHttpException(exception) ? (exception as HttpException).getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        const payload = exception instanceof HttpException ? (exception.getResponse() as T) : null;
+        const payload = isHttpException(exception) ? ((exception as HttpException).getResponse() as T) : null;
 
-        const messages =
-            exception instanceof HttpException ? this.reflector.get<string[]>(FORMATTED_MESSAGE_METADATA, exception.constructor) || [] : exception instanceof Error ? [exception.message] : [];
+        const messages = exception instanceof Error ? this.reflector.get<string[]>(FORMATTED_MESSAGE_METADATA, exception.constructor) || (exception.message ? [exception.message] : []) : [];
 
         const formattedException: FormattedException<T> = {
             status: Status.ERROR,
@@ -26,12 +27,6 @@ export class FormattedExceptionFilter<T> implements ExceptionFilter {
             code
         };
 
-        if (response.status(code).json) {
-            // Express
-            response.status(code).json(formattedException);
-        } else {
-            // Fastify
-            response.status(code).send(formattedException);
-        }
+        httpAdapter.reply(ctx.getResponse(), formattedException, code);
     }
 }

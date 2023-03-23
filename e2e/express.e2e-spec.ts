@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { ApplicationModule } from './src/app.module';
 import { FormattedExceptionFilter, FormattedResponseInterceptor } from '../src';
@@ -13,8 +13,9 @@ describe('FormattedResponse interceptor + decorator on nest express', () => {
         const adapter = new ExpressAdapter(server);
         const reflector = new Reflector();
         app = await NestFactory.create<NestExpressApplication>(ApplicationModule, adapter, { logger: false });
+        const adapterHost = app.get(HttpAdapterHost);
         app.useGlobalInterceptors(new FormattedResponseInterceptor(reflector));
-        app.useGlobalFilters(new FormattedExceptionFilter(reflector));
+        app.useGlobalFilters(new FormattedExceptionFilter(adapterHost, reflector));
         await app.init();
     });
 

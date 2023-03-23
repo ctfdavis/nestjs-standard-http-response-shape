@@ -5,7 +5,8 @@ export const fixtures = {
         getBoolean: ['message for getBoolean'],
         getArray: ['message for getArray', 'message for getArray'],
         getObject: [],
-        getHTTPException: ['message for getHTTPException']
+        getHTTPException: ['message for getHTTPException'],
+        getBadRequestException: ['message for getBadRequestException']
     },
     expectedMessages: {
         getString: ['message for getString'],
@@ -15,7 +16,8 @@ export const fixtures = {
         getObject: [],
         getEmpty: [],
         getHTTPException: ['message for getHTTPException'],
-        getNotHTTPException: []
+        getNotHTTPException: ['not-http-exception'],
+        getBadRequestException: ['message for getBadRequestException']
     },
     values: {
         getString: 'Hello world!',
@@ -25,7 +27,10 @@ export const fixtures = {
         getObject: { foo: 'bar' },
         getEmpty: undefined,
         getHTTPException: 'http-exception',
-        getNotHTTPException: 'not-http-exception'
+        getNotHTTPException: 'not-http-exception',
+        getBadRequestException: {
+            error: 'testing bad request'
+        }
     },
     expectedValues: {
         getString: 'Hello world!',
@@ -35,7 +40,10 @@ export const fixtures = {
         getObject: { foo: 'bar' },
         getEmpty: null,
         getHTTPException: 'http-exception',
-        getNotHTTPException: 'not-http-exception'
+        getNotHTTPException: null,
+        getBadRequestException: {
+            error: 'testing bad request'
+        }
     },
     paths: {
         getString: '/string',
@@ -45,6 +53,7 @@ export const fixtures = {
         getObject: '/object',
         getEmpty: '/empty',
         getHTTPException: '/http-exception',
-        getNotHTTPException: '/not-http-exception'
+        getNotHTTPException: '/not-http-exception',
+        getBadRequestException: '/bad-request-exception'
     }
 };

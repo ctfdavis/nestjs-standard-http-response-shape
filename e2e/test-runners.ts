@@ -74,5 +74,14 @@ export function runTests(platform: string, getApp: () => any) {
                 payload: fixtures.expectedValues.getNotHTTPException
             });
         });
+
+        it('should return bad request exception', () => {
+            return request(getApp().getHttpServer()).get(fixtures.paths.getBadRequestException).expect(400).expect({
+                status: 'error',
+                code: 400,
+                messages: fixtures.expectedMessages.getBadRequestException,
+                payload: fixtures.expectedValues.getBadRequestException
+            });
+        });
     });
 }
