@@ -71,23 +71,27 @@ enum Status {
     ERROR = 'error'
 }
 
-interface Formatted<T> {
+type NotUndefined = {} | null;
+
+interface Formatted<T extends NotUndefined = NotUndefined> {
     status: Status;
     messages: string[];
-    payload: T | null;
+    payload: T;
     code: number;
 }
 
-interface FormattedResponse<T> extends Formatted<T> {
+interface FormattedResponse<T extends NotUndefined> extends Formatted<T> {
     status: Status.OK;
 }
 
-interface FormattedException<T> extends Formatted<T> {
+interface FormattedException extends Formatted {
     status: Status.ERROR;
 }
 ```
 
 ### Examples
+
+Successful responses will have a status of `Status.OK` and the payload will be included in the `payload` property. Error responses will have a status of `Status.ERROR` and any error messages will be included in the `messages` property.
 
 #### Successful Response
 
@@ -145,7 +149,37 @@ getError() {
 }
 ```
 
-Successful responses will have a status of `Status.OK` and the payload will be included in the `payload` property. Error responses will have a status of `Status.ERROR` and any error messages will be included in the `messages` property.
+##### Differentiation between `payload` and `messages`
+
+As for error responses, the purpose of the payload field in error responses is to provide additional, structured information about the error, whereas `messages` is for human-readable error messages
+
+Therefore, this library will not automatically add any error message to the `messages` property. Instead, the developer must explicitly add the error message to the `messages` property using the `FormattedMessages` function.
+
+For example, the following code will not add the error message to the `messages` property:
+
+```typescript
+// app.controller.ts
+@Get('/error')
+getError() {
+    throw new BadRequestException('error string');
+}
+```
+
+```json
+# GET /error
+{
+    "status": "error",
+    "messages": [],
+    "payload": {
+      "statusCode": 400,
+      "message": "error string",
+      "error": "Bad Request"
+    },
+    "code": 400
+}
+```
+
+As seen above, the library will add the string to the `message` property of the `payload` object. To add the error message to the `messages` property, the developer must explicitly add the error message to the `messages` property.
 
 ## Platforms
 
