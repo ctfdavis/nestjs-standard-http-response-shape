@@ -42,7 +42,7 @@ describe('FormattedExceptionFilter', () => {
             {
                 status: Status.ERROR,
                 messages: ['Error message 1', 'Error message 2'],
-                payload: 'Test Payload',
+                payload: { message: 'Test Payload' },
                 code: 404
             },
             404
@@ -59,7 +59,7 @@ describe('FormattedExceptionFilter', () => {
             expect.anything(),
             {
                 status: Status.ERROR,
-                messages: ['Http Exception'],
+                messages: [],
                 payload: { error: 'Test Payload' },
                 code: 400
             },
@@ -95,8 +95,8 @@ describe('FormattedExceptionFilter', () => {
             expect.anything(),
             {
                 status: Status.ERROR,
-                messages: [errorMsg],
-                payload: null,
+                messages: [],
+                payload: { message: errorMsg },
                 code: 500
             },
             500

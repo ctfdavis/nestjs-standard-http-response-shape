@@ -3,8 +3,8 @@ export const getNotHTTPExceptionFixture = {
     statusCode: 500,
     expected: {
         status: 'error',
-        messages: ['message for getNotHTTPException'],
-        payload: null,
+        messages: [],
+        payload: { message: 'something went wrong' },
         code: 500
     }
 };

@@ -4,7 +4,7 @@ export const getHTTPExceptionFixture = {
     expected: {
         status: 'error',
         messages: ['message for getHTTPException'],
-        payload: 'http exception',
+        payload: { message: 'http exception' },
         code: 403
     }
 };

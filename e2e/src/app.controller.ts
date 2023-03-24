@@ -44,7 +44,7 @@ export class AppController {
 
     @Get('/not-http-exception')
     getNotHTTPException() {
-        throw FormattedMessages('message for getNotHTTPException', new Error('not http exception'));
+        throw new Error('something went wrong');
     }
 
     @Get('/bad-request-exception')

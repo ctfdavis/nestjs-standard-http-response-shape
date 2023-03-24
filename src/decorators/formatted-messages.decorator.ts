@@ -1,7 +1,7 @@
-import { SetMetadata } from '@nestjs/common';
+import { HttpException, SetMetadata } from '@nestjs/common';
 import { FORMATTED_MESSAGE_METADATA } from '../constants';
 
-export function FormattedMessages(messages: string | string[], exception?: Error) {
+export function FormattedMessages(messages: string | string[], exception?: HttpException) {
     if (typeof messages === 'string') {
         messages = [messages];
     }
