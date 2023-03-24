@@ -23,11 +23,11 @@
         "response"
     ],
     "author": "Davis Chan <davis.chan@aol.com>",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/ctfdavis/nestjs-standard-http-response-shape/issues"
     },
-    "homepage": "https://github.com/yourusername/nestjs-standard-http-response-shape#readme",
+    "homepage": "https://github.com/ctfdavis/nestjs-standard-http-response-shape#readme",
     "publishConfig": {
         "access": "public"
     },
