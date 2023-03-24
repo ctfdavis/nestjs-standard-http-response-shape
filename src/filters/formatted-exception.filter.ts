@@ -5,7 +5,7 @@ import { HttpAdapterHost, Reflector } from '@nestjs/core';
 import { FORMATTED_MESSAGE_METADATA } from '../constants';
 
 @Catch()
-export class FormattedExceptionFilter<T> implements ExceptionFilter {
+export class FormattedExceptionFilter implements ExceptionFilter {
     constructor(private readonly httpAdapterHost: HttpAdapterHost, private readonly reflector: Reflector) {}
 
     catch(exception: unknown, host: ArgumentsHost) {
@@ -15,11 +15,11 @@ export class FormattedExceptionFilter<T> implements ExceptionFilter {
 
         const code = exception instanceof HttpException ? (exception as HttpException).getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-        const payload = exception instanceof HttpException ? ((exception as HttpException).getResponse() as T) : null;
+        const payload = exception instanceof HttpException ? (exception as HttpException).getResponse() : null;
 
         const messages = exception instanceof Error ? this.reflector.get<string[]>(FORMATTED_MESSAGE_METADATA, exception.constructor) || (exception.message ? [exception.message] : []) : [];
 
-        const formattedException: FormattedException<T> = {
+        const formattedException: FormattedException = {
             status: Status.ERROR,
             messages,
             payload,

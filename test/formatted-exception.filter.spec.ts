@@ -5,7 +5,7 @@ import { FORMATTED_MESSAGE_METADATA } from '../src/constants';
 import { Status } from '../src/types/status.enum';
 
 describe('FormattedExceptionFilter', () => {
-    let filter: FormattedExceptionFilter<any>;
+    let filter: FormattedExceptionFilter;
     let reflector: Reflector;
     let adapter: HttpAdapterHost;
     let response: any;
