@@ -6,14 +6,15 @@ This package is heavily inspired by a blog post by Andrey Petrov titled ["How I 
 
 ## Installation
 
-You can install the package using NPM or Yarn:
-
 ```bash
-# NPM
+# npm
 npm install nestjs-standard-http-response-shape
 
-# Yarn
+# yarn
 yarn add nestjs-standard-http-response-shape
+
+# pnpm
+pnpm add nestjs-standard-http-response-shape
 ```
 
 ## Usage
@@ -34,7 +35,7 @@ app.useGlobalFilters(new FormattedExceptionFilter(adapterHost, reflector));
 
 The providers will intercept all successful responses and catch exceptions, and then format them into a standard shape.
 
-You can then use the `FormattedMessages` decorator to conveniently set the `messages` property for a particular route handler:
+You can use the `FormattedMessages` function to conveniently set the `messages` property for a particular route handler or to add formatted messages to an exception:
 
 ```typescript
 import { Controller, Get, HttpException } from '@nestjs/common';
@@ -55,7 +56,10 @@ export class AppController {
 }
 ```
 
-In this example, the `FormattedMessages` decorator is used to set the `messages` property for the `getHello` and `getError` route handlers.
+In this example, the `FormattedMessages` function is used in two ways:
+
+1. As a decorator for the `getHello` route handler, it sets the messages property with the given array of messages. In this case, it sets the messages property to `['Hello, world!']`.
+2. For the `getError` route handler, it is used differently. Instead of being a decorator, the `FormattedMessages` function is called directly with two arguments: an array of messages and an instance of `HttpException`. The function then adds the formatted messages to the exception by setting the metadata on a new instance of the exception. This new instance is then thrown in the getError route handler. In this case, the formatted messages are `['An error occurred.']`.
 
 ### Response Shape
 
