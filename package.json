@@ -1,6 +1,6 @@
 {
     "name": "nestjs-standard-http-response-shape",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "NestJS HTTP response interceptor & exception filter for uniforming the response shape",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
