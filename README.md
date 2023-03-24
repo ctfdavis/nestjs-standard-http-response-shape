@@ -76,7 +76,6 @@ interface Formatted<T> {
 
 interface FormattedResponse<T> extends Formatted<T> {
     status: Status.OK;
-    payload: T | null;
 }
 
 interface FormattedException<T> extends Formatted<T> {
