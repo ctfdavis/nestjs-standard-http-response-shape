@@ -1,56 +1,59 @@
 import { BadRequestException, Controller, Get, HttpException } from '@nestjs/common';
 import { FormattedMessages } from '../../src';
-import { fixtures } from '../fixtures';
 
 @Controller()
 export class AppController {
-    @Get(fixtures.paths.getString)
-    @FormattedMessages(fixtures.messages.getString)
+    @Get('/string')
+    @FormattedMessages('message for getString')
     getString() {
-        return fixtures.values.getString;
+        return 'Hello world!';
     }
 
-    @Get(fixtures.paths.getNumber)
-    @FormattedMessages(fixtures.messages.getNumber)
+    @Get('/number')
+    @FormattedMessages('message for getNumber')
     getNumber() {
-        return fixtures.values.getNumber;
+        return 42;
     }
 
-    @Get(fixtures.paths.getBoolean)
-    @FormattedMessages(fixtures.messages.getBoolean)
-    getBoolean(): boolean {
-        return fixtures.values.getBoolean;
+    @Get('/boolean')
+    @FormattedMessages('message for getBoolean')
+    getBoolean() {
+        return true;
     }
 
-    @Get(fixtures.paths.getArray)
-    @FormattedMessages(fixtures.messages.getArray)
+    @Get('/array')
+    @FormattedMessages(['message for getArray', 'message for getArray'])
     getArray() {
-        return fixtures.values.getArray;
+        return ['Hello', 'world'];
     }
 
-    @Get(fixtures.paths.getObject)
-    @FormattedMessages(fixtures.messages.getObject)
+    @Get('/object')
     getObject() {
-        return fixtures.values.getObject;
+        return {
+            foo: 'bar'
+        };
     }
 
-    @Get(fixtures.paths.getEmpty)
-    getEmpty() {
-        return fixtures.values.getEmpty;
-    }
+    @Get('/empty')
+    getEmpty() {}
 
-    @Get(fixtures.paths.getHTTPException)
+    @Get('/http-exception')
     getHTTPException() {
-        throw FormattedMessages(fixtures.messages.getHTTPException, new HttpException(fixtures.values.getHTTPException, 403));
+        throw FormattedMessages('message for getHTTPException', new HttpException('http exception', 403));
     }
 
-    @Get(fixtures.paths.getNotHTTPException)
+    @Get('/not-http-exception')
     getNotHTTPException() {
-        throw new Error(fixtures.values.getNotHTTPException);
+        throw FormattedMessages('message for getNotHTTPException', new Error('not http exception'));
     }
 
-    @Get(fixtures.paths.getBadRequestException)
+    @Get('/bad-request-exception')
     getBadRequestException() {
-        throw FormattedMessages(fixtures.messages.getBadRequestException, new BadRequestException(fixtures.values.getBadRequestException));
+        throw FormattedMessages(
+            'message for getBadRequestException',
+            new BadRequestException({
+                error: 'testing bad request'
+            })
+        );
     }
 }
